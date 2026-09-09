@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "openapi": [],
+    "network": {
+      "invoke": {
+        "urls": [
+          "https://ark.cn-beijing.volces.com/*"
+        ]
+      }
+    }
+  },
+  "timeout": 60,
+  "memorySize": 256
+}

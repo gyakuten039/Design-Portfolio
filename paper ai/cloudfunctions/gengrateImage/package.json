@@ -1,0 +1,14 @@
+{
+  "name": "generateImage",
+  "version": "3.0.0",
+  "description": "AI图片生成云函数 - 腾讯混元生图（需要beta版SDK）",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "^3.0.0"
+  }
+}
