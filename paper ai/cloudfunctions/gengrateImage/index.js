@@ -4,7 +4,7 @@ cloud.init({
 })
 
 // ===== 配置区域（用户需要填的部分）=====
-const DOUBAO_API_KEY = "ark-082cbe20-2dca-4fce-9559-ce32d9a40dad-e11c4"; // 你的 API Key
+const DOUBAO_API_KEY = "*****"; // 你的 API Key
 const DOUBAO_MODEL = "doubao-seedream-4-0-250828"; // 模型ID（Doubao-Seedream-4.0）
 const DOUBAO_API_URL = "https://ark.cn-beijing.volces.com/api/v3/images/generations"; // API地址
 // =====================================
