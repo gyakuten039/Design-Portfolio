@@ -1,0 +1,193 @@
+<!-- 剪纸AI问答页面 -->
+<view class="container">
+  <!-- 标题区域 -->
+  <view class="header">
+    <text class="title">🏮 剪纸AI问答</text>
+    <text class="subtitle">探索中国传统剪纸艺术</text>
+    <view class="clear-btn" bindtap="clearChat">
+      <text class="clear-text">清空</text>
+    </view>
+  </view>
+
+  <!-- 对话列表 -->
+  <scroll-view 
+    class="chat-container" 
+    scroll-y 
+    scroll-into-view="{{scrollToView}}"
+    scroll-with-animation="{{false}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{true}}"
+    enable-back-to-top="{{true}}"
+  >
+    <!-- 欢迎语 -->
+    <view class="welcome-message" wx:if="{{chatList.length === 0}}">
+      <view class="welcome-icon">✂️</view>
+      <text class="welcome-title">欢迎来到剪纸AI问答</text>
+      <text class="welcome-desc">我可以帮您了解剪纸的历史、技法、图案寓意等知识</text>
+      <view class="example-questions">
+        <text class="example-title">您可以问我：</text>
+        <view class="example-item" bindtap="useExample" data-text="剪纸的起源和历史是什么？">• 剪纸的起源和历史是什么？</view>
+        <view class="example-item" bindtap="useExample" data-text="如何制作一个简单的窗花？">• 如何制作一个简单的窗花？</view>
+        <view class="example-item" bindtap="useExample" data-text="龙凤图案的寓意是什么？">• 龙凤图案的寓意是什么？</view>
+        <view class="example-item" bindtap="useExample" data-text="剪纸有哪些基本技法？">• 剪纸有哪些基本技法？</view>
+      </view>
+    </view>
+
+    <!-- 消息列表 -->
+    <view class="message-list">
+      <view 
+        wx:for="{{chatList}}" 
+        wx:key="index"
+        id="msg-{{index}}"
+        class="message-item {{item.type}}"
+      >
+        <!-- 用户消息 -->
+        <view wx:if="{{item.type === 'user'}}" class="user-message">
+          <view class="message-content">
+            <text>{{item.content}}</text>
+          </view>
+          <view class="avatar user-avatar">我</view>
+        </view>
+
+        <!-- 用户图片消息 -->
+        <view wx:if="{{item.type === 'user-image'}}" class="user-message">
+          <view class="message-content">
+            <image wx:if="{{item.imagePath}}" class="user-image" src="{{item.imagePath}}" mode="widthFix" bindtap="previewImage" data-url="{{item.imagePath}}"/>
+            <text wx:if="{{item.content !== '📷 [图片]'}}">{{item.content}}</text>
+          </view>
+          <view class="avatar user-avatar">我</view>
+        </view>
+
+        <!-- AI消息 -->
+        <view wx:if="{{item.type === 'ai'}}" class="ai-message">
+          <view class="avatar ai-avatar">AI</view>
+          <view class="message-content">
+            <text>{{item.content}}</text>
+            <view wx:if="{{item.isStreaming}}" class="streaming-indicator">
+              <text class="dot">.</text>
+              <text class="dot">.</text>
+              <text class="dot">.</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 图片消息 -->
+        <view wx:if="{{item.type === 'image'}}" class="image-message">
+          <view class="avatar ai-avatar">AI</view>
+          <view class="image-content">
+            <image
+              class="generated-image"
+              src="{{item.imageUrl}}"
+              mode="widthFix"
+              lazy-load="{{true}}"
+              bindtap="previewImage"
+              data-url="{{item.imageUrl}}"
+            />
+            <view class="image-actions">
+              <button class="save-btn" bindtap="saveImage" data-url="{{item.imageUrl}}">保存图片</button>
+            </view>
+            <view wx:if="{{item.revisedPrompt}}" class="revised-prompt">
+              <text class="prompt-label">优化提示词：</text>
+              <text class="prompt-text">{{item.revisedPrompt}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 图生图结果消息 -->
+        <view wx:if="{{item.type === 'image-generation'}}" class="image-generation-message">
+          <view class="avatar ai-avatar">AI</view>
+          <view class="image-content">
+            <view class="generation-comparison">
+              <view class="comparison-item">
+                <text class="comparison-label">原图</text>
+                <image
+                  class="comparison-image"
+                  src="{{item.originalImage}}"
+                  mode="widthFix"
+                  lazy-load="{{true}}"
+                  bindtap="previewImage"
+                  data-url="{{item.originalImage}}"
+                />
+              </view>
+              <view class="comparison-arrow">→</view>
+              <view class="comparison-item">
+                <text class="comparison-label">生成图</text>
+                <image
+                  class="comparison-image"
+                  src="{{item.generatedImage}}"
+                  mode="widthFix"
+                  lazy-load="{{true}}"
+                  bindtap="previewImage"
+                  data-url="{{item.generatedImage}}"
+                />
+              </view>
+            </view>
+            <view class="image-actions">
+              <button class="save-btn" bindtap="saveImage" data-url="{{item.generatedImage}}">保存生成图</button>
+            </view>
+            <view wx:if="{{item.prompt}}" class="generation-prompt">
+              <text class="prompt-label">生成提示词：</text>
+              <text class="prompt-text">{{item.prompt}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 底部占位，用于滚动 -->
+      <view id="scroll-bottom" style="height: 20rpx;"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <!-- 生成图片按钮 -->
+    <button
+      class="generate-image-btn {{isGeneratingImage ? 'loading' : ''}} {{canGenerateImage ? '' : 'disabled'}}"
+      bindtap="generatePaperCutImage"
+    >
+      <text wx:if="{{!isGeneratingImage}}">🎨 生成剪纸图案</text>
+      <text wx:else>生成中...</text>
+    </button>
+
+    <!-- 选择照片按钮 -->
+    <button
+      class="select-image-btn"
+      bindtap="selectImage"
+    >
+      📷 识别照片
+    </button>
+
+    <!-- 图生图按钮（当有已选图片时显示） -->
+    <button
+      wx:if="{{selectedImage}}"
+      class="img2img-btn"
+      bindtap="generateImageFromImage"
+    >
+      🔄 图生图
+    </button>
+
+    <!-- 已选图片预览 -->
+    <view wx:if="{{selectedImage}}" class="selected-image-preview">
+      <image class="preview-image" src="{{selectedImage}}" mode="aspectFill"/>
+      <view class="cancel-image-btn" bindtap="cancelSelectImage">×</view>
+    </view>
+
+    <!-- 输入区域 -->
+    <view class="input-area">
+      <input
+        class="message-input"
+        placeholder="{{selectedImage ? '请输入关于图片的问题...' : '请输入关于剪纸的问题...'}}"
+        value="{{inputValue}}"
+        bindinput="onInputChange"
+        confirm-type="send"
+        bindconfirm="sendMessage"
+      />
+      <view
+        class="send-btn {{isGeneratingText ? 'loading' : ''}} {{canSend ? '' : 'disabled'}}"
+        bindtap="sendMessage"
+      >
+        <text wx:if="{{!isGeneratingText}}">发送</text>
+        <text wx:else>...</text>
+      </view>
+    </view>
+  </view>
+</view>
