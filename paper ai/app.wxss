@@ -1,0 +1,31 @@
+/**app.wxss**/
+page {
+  --primary-color: #c41e3a;
+  --secondary-color: #8b0000;
+  --bg-color: #fff5f5;
+  --text-color: #333;
+  --border-color: #e0e0e0;
+}
+
+.container {
+  padding: 20rpx;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  font-size: 32rpx;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+}
