@@ -1,0 +1,16 @@
+E:\C#\大作业\大作业\bin\x86\Debug\大作业.exe.config
+E:\C#\大作业\大作业\bin\x86\Debug\大作业.exe
+E:\C#\大作业\大作业\bin\x86\Debug\大作业.pdb
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.csproj.AssemblyReference.cache
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form1.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form2.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form3.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form4.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form5.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form7.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Form9.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.Properties.Resources.resources
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.csproj.GenerateResource.cache
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.csproj.CoreCompileInputs.cache
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.exe
+E:\C#\大作业\大作业\obj\x86\Debug\大作业.pdb
